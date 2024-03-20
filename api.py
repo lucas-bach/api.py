@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
 from typing import Union
+from cadastro import cadastros
+
 
 
 
