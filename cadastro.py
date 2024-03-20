@@ -34,11 +34,11 @@ for linha in linhas[1:]:
         "cpf": campos[2],
         "sexo": campos[3],
         "state": campos[4],
-        "city": campos[5]
+        "city": campos[6]
     }
     
     cadastros.append(cadastro)
 
 
-for i, cadastro in enumerate(cadastros[:10]):
+for i, cadastro in enumerate(cadastros[:5]):
     print(f"Cadastro {i+1}: {cadastro}")
