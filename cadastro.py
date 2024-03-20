@@ -77,9 +77,10 @@ for cadastro in cadastros:
         
         
         if contatos_encontrados == 10:
+            print("Final da lista!")
             break
 
-
+print("\nContatos do estado desejado:")
 for i, contato in enumerate(contatos_estado):
     print(f"Contato {i+1}: {contato}")
 
@@ -87,6 +88,7 @@ genero_masculino = "M"
 usuarios_encontrados = 0
 usuarios_masculinos = []    
 
+print("\nUsuários masculinos:")
 for cadastro in cadastros:
 
     if cadastro["sexo"] == genero_masculino:

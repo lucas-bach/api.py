@@ -25,6 +25,7 @@ app = FastAPI()
 cadastros = []
 
 
+
 @app.get("/")
 def home():    
     return {"Listagem": len(cadastros) }
