@@ -24,21 +24,24 @@ with open("lista.csv", 'r') as file:
 cadastros = []
 
 
-for linha in linhas[1:]:
-    
+for linha in linhas[1:]:    
     campos = linha.strip().split(",")
+
+    state = campos[4].strip('()')
+    namestate = campos[5].strip('()')
     
     cadastro = {
         "name": campos[0],
         "phone": campos[1],
         "cpf": campos[2],
         "sexo": campos[3],
-        "state": campos[4],
+        "state": state,
+        "namestate": namestate,
         "city": campos[6]
     }
     
     cadastros.append(cadastro)
 
 
-for i, cadastro in enumerate(cadastros[:5]):
+for i, cadastro in enumerate(cadastros[:1]):
     print(f"Cadastro {i+1}: {cadastro}")
