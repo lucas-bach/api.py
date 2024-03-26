@@ -31,36 +31,6 @@ for i, cadastro in enumerate(cadastros[:50]):
 
 
 
-# estado_desejado = "SC"
-# genero_masculino = "M"
-# contatos_encontrados = 0
-# usuarios_encontrados = 0
-# contatos_estado = []
-# usuarios_masculinos = []
-
-# for cadastro in cadastros:
-#     if cadastro["state"] == estado_desejado:
-#         contatos_encontrados += 1
-#         contatos_estado.append(cadastro)
-#         if contatos_encontrados == 10:
-#             break
-
-#     if cadastro["sexo"] == genero_masculino:
-#         usuarios_encontrados += 1
-#         usuarios_masculinos.append(cadastro)
-#         if usuarios_encontrados == 10:
-#             break
-
-# print("Contatos do estado desejado:")
-# for i, contato in enumerate(contatos_estado):
-#     print(f"Contato {i+1}: {contato}")
-
-# print("\nUsuários masculinos:")
-# for i, contato in enumerate(usuarios_masculinos):
-#     print(f"Contato {i+1}: {contato}")
-
-
-
 estado_desejado = "SC"
 contatos_encontrados = 0
 contatos_estado = []
@@ -80,7 +50,7 @@ for cadastro in cadastros:
             print("Final da lista!")
             break
 
-print("\nContatos do estado desejado:")
+
 for i, contato in enumerate(contatos_estado):
     print(f"Contato {i+1}: {contato}")
 

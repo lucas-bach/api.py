@@ -4,8 +4,6 @@ from typing import Union
 from cadastro import cadastros
 
 
-
-
 app = FastAPI()
 
 # cadastros = {
@@ -21,9 +19,6 @@ app = FastAPI()
 #     9:{"nome": "Ana Sophia Castro", "fone": "71 2037 5968,378.961.250-21", "sexo": "F", "state": ("SP", "São Paulo"), "city": "Ferreira dos Dourados"}
 
 # }
-
-cadastros = []
-
 
 
 @app.get("/")
