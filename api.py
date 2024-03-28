@@ -29,3 +29,5 @@ def pesquisar_estado(estado: str = Query(..., description="Estado a ser pesquisa
 def pesquisar_sexo(sexo: str = Query(..., description="Sexo a ser pesquisado")):
     resultado = pesquisar_por_sexo(cadastros, sexo)
     return {"resultados": resultado}   
+
+
