@@ -69,10 +69,19 @@ def ler_csv():
 def inserir_cadastro(nome):
     conn = sqlite3.connect("testnovo.db")
     cursor = conn.cursor()
-    query = f"INSERT INTO pessoa (nome) VALUES (?);"
+    query = "INSERT INTO pessoa (nome) VALUES (?);"
     cursor.execute(query,(nome,))
     conn.commit()
     conn.close()
+
+def delete_cadastro(nome):
+    conn = sqlite3.connect("testnovo.db")
+    cursor = conn.cursor()
+    query = "DELETE FROM pessoa WHERE nome = (?);"
+    cursor.execute(query,(nome,))
+    conn.commit()
+    conn.close()    
+
 
 
 
