@@ -90,7 +90,17 @@ def atualizar_cadastro(nome_antigo, nome_novo):
     conn.commit()
     conn.close()
 
+def ler_cadastro(nome):
+    conn = sqlite3.connect("testnovo.db")
+    cursor = conn.cursor()
+    query = "SELECT * FROM pessoa WHERE nome = ?;"
+    cursor.execute(query, (nome,))
+    resultado = cursor.fetchone()
+    conn.close()
+    return resultado
 
+    
+    
 
 
 
