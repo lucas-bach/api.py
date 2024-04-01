@@ -82,7 +82,13 @@ def delete_cadastro(nome):
     conn.commit()
     conn.close()    
 
-
+def atualizar_cadastro(nome_antigo, nome_novo):
+    conn = sqlite3.connect("testnovo.db")
+    cursor = conn.cursor()
+    query = "UPDATE pessoa SET nome = (?) WHERE nome = (?);"
+    cursor.execute(query, ( nome_novo, nome_antigo))
+    conn.commit()
+    conn.close()
 
 
 
