@@ -10,36 +10,36 @@ class Cadastro(BaseModel):
     namestate: str
     city: str
 
-def pesquisar_por_estado(cadastros, estado, limite = 10):
-    resultados = []
-    encontrados = 0
+# def pesquisar_por_estado(cadastros, estado, limite = 10):
+#     resultados = []
+#     encontrados = 0
     
-    for cadastro in cadastros:
-        if cadastro["state"] == estado:
-            resultados.append(cadastro)
-            encontrados += 1
+#     for cadastro in cadastros:
+#         if cadastro["state"] == estado:
+#             resultados.append(cadastro)
+#             encontrados += 1
             
-            if encontrados == limite:
-                break
+#             if encontrados == limite:
+#                 break
     
-    return resultados
+#     return resultados
 
 
-def pesquisar_por_sexo(cadastros, sexo, limite = 10):
-    resultados = []
-    encontrados = 0
+# def pesquisar_por_sexo(cadastros, sexo, limite = 10):
+#     resultados = []
+#     encontrados = 0
     
-    for cadastro in cadastros:
-        if cadastro["sexo"] == sexo:
-            resultados.append(cadastro)
-            encontrados += 1
+#     for cadastro in cadastros:
+#         if cadastro["sexo"] == sexo:
+#             resultados.append(cadastro)
+#             encontrados += 1
             
-            if encontrados == limite:
-                break
+#             if encontrados == limite:
+#                 break
     
-    return resultados
+#     return resultados
 
-#colocar como função
+
 def ler_csv():
     with open("lista.csv", 'r') as file:
         linhas = file.readlines()
@@ -65,39 +65,66 @@ def ler_csv():
         cadastros.append(cadastro)
     return cadastros
 
-
-def inserir_cadastro(nome):
-    conn = sqlite3.connect("testnovo.db")
+def insert_users():
+    conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
-    query = "INSERT INTO pessoa (nome) VALUES (?);"
-    cursor.execute(query,(nome,))
-    conn.commit()
-    conn.close()
+    query = "INSERT INTO dadosusuarios (name,phone,cpf,sexo,state,namestate,city) VALUES (?,?,?,?,?,?,?);"
 
-def delete_cadastro(nome):
-    conn = sqlite3.connect("testnovo.db")
-    cursor = conn.cursor()
-    query = "DELETE FROM pessoa WHERE nome = (?);"
-    cursor.execute(query,(nome,))
-    conn.commit()
-    conn.close()    
+    cadastros = ler_csv()
+    count = 0
 
-def atualizar_cadastro(nome_antigo, nome_novo):
-    conn = sqlite3.connect("testnovo.db")
-    cursor = conn.cursor()
-    query = "UPDATE pessoa SET nome = (?) WHERE nome = (?);"
-    cursor.execute(query, ( nome_novo, nome_antigo))
-    conn.commit()
-    conn.close()
+    for cadastro in cadastros:
+        nome = cadastro["name"]
+        telefone = cadastro["phone"]
+        cpf = cadastro["cpf"]
+        sexo = cadastro["sexo"]
+        estado = cadastro["state"]
+        nomestado = cadastro["namestate"]
+        cidade = cadastro["city"]
+        cursor.execute(query,(nome,telefone,cpf,sexo,estado,nomestado,cidade))
+        conn.commit()
+        count += 1
 
-def ler_cadastro(nome):
-    conn = sqlite3.connect("testnovo.db")
-    cursor = conn.cursor()
-    query = "SELECT * FROM pessoa WHERE nome = ?;"
-    cursor.execute(query, (nome,))
-    resultado = cursor.fetchone()
-    conn.close()
-    return resultado
+        if count == 100:
+            break
+
+    conn.close() 
+    
+
+
+
+# def inserir_cadastro(nome):
+#     conn = sqlite3.connect("register.db")
+#     cursor = conn.cursor()
+#     query = "INSERT INTO pessoa (nome) VALUES (?);"
+#     cursor.execute(query,(nome,))
+#     conn.commit()
+#     conn.close()
+
+# def delete_cadastro(nome):
+#     conn = sqlite3.connect("register.db")
+#     cursor = conn.cursor()
+#     query = "DELETE FROM pessoa WHERE nome = (?);"
+#     cursor.execute(query,(nome,))
+#     conn.commit()
+#     conn.close()    
+
+# def atualizar_cadastro(nome_antigo, nome_novo):
+#     conn = sqlite3.connect("register.db")
+#     cursor = conn.cursor()
+#     query = "UPDATE pessoa SET nome = (?) WHERE nome = (?);"
+#     cursor.execute(query, ( nome_novo, nome_antigo))
+#     conn.commit()
+#     conn.close()
+
+# def ler_cadastro(nome):
+#     conn = sqlite3.connect("register.db")
+#     cursor = conn.cursor()
+#     query = "SELECT * FROM pessoa WHERE nome = ?;"
+#     cursor.execute(query, (nome,))
+#     resultado = cursor.fetchone()
+#     conn.close()
+#     return resultado
 
     
     
