@@ -1,5 +1,5 @@
 import sqlite3
-conn = sqlite3.connect("financeiro.db")
+conn = sqlite3.connect("register.db")
 
 # Criando um cursor
 cursor = conn.cursor()
