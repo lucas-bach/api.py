@@ -34,6 +34,7 @@ def pesquisar_sexo(sexo: str = Query(..., description="Sexo a ser pesquisado")):
 if __name__=="__main__":
     uvicorn.run(app)
 
+2
 
 
 
