@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 import uvicorn
 from typing import Union
-from cadastro import cadastros, pesquisar_por_estado, pesquisar_por_sexo
+from cadastro import cadastros, pesquisar_por_estado, pesquisar_por_sexo,insert_users
 from typing import List
 
 
@@ -28,6 +28,13 @@ def pesquisar_estado(estado: str = Query(..., description="Estado a ser pesquisa
 @app.get("/pesquisar/sexo")
 def pesquisar_sexo(sexo: str = Query(..., description="Sexo a ser pesquisado")):
     resultado = pesquisar_por_sexo(cadastros, sexo)
-    return {"resultados": resultado}   
+    return {"resultados": resultado} 
+
+
+if __name__=="__main__":
+    uvicorn.run(app)
+
+
+
 
 
