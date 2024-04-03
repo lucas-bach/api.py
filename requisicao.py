@@ -10,7 +10,7 @@ payload = json.dumps({
   "param": [
     {
       "pagina": 1,
-      "registros_por_pagina": 50,
+      "registros_por_pagina": 100,
       "apenas_importado_api": "N"
     }
   ]
