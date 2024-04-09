@@ -65,28 +65,28 @@ def ler_csv():
         cadastros.append(cadastro)
     return cadastros
 
-def insert_users():
+def insert_users(name,phone,cpf,sexo,state,namestate,city):
     conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
     query = "INSERT INTO dadosusuarios (name,phone,cpf,sexo,state,namestate,city) VALUES (?,?,?,?,?,?,?);"
 
-    cadastros = ler_csv()
-    count = 0
+    # cadastros = ler_csv()
+    # count = 0
 
-    for cadastro in cadastros:
-        nome = cadastro["name"]
-        telefone = cadastro["phone"]
-        cpf = cadastro["cpf"]
-        sexo = cadastro["sexo"]
-        estado = cadastro["state"]
-        nomestado = cadastro["namestate"]
-        cidade = cadastro["city"]
-        cursor.execute(query,(nome,telefone,cpf,sexo,estado,nomestado,cidade))
-        conn.commit()
-        count += 1
+    # for cadastro in cadastros:
+    #     nome = cadastro["name"]
+    #     telefone = cadastro["phone"]
+    #     cpf = cadastro["cpf"]
+    #     sexo = cadastro["sexo"]
+    #     estado = cadastro["state"]
+    #     nomestado = cadastro["namestate"]
+    #     cidade = cadastro["city"]
+    cursor.execute(query,(name,phone,cpf,sexo,state,namestate,city))
+    conn.commit()
+    #     count += 1
 
-        if count == 100:
-            break
+    #     if count == 100:
+    #         break
 
     conn.close() 
     
@@ -110,8 +110,7 @@ def insert_users():
 #     conn.close()    
 
 # def atualizar_cadastro(nome_antigo, nome_novo):
-#     conn = sqlite3.connect("register.db")
-#     cursor = conn.cursor()
+#     conn = sqlite3.connect("register.db")#     cursor = conn.cursor()
 #     query = "UPDATE pessoa SET nome = (?) WHERE nome = (?);"
 #     cursor.execute(query, ( nome_novo, nome_antigo))
 #     conn.commit()
