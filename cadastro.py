@@ -68,28 +68,31 @@ def ler_csv():
 def insert_users(name,phone,cpf,sexo,state,namestate,city):
     conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
-    query = "INSERT INTO dadosusuarios (name,phone,cpf,sexo,state,namestate,city) VALUES (?,?,?,?,?,?,?);"
-
-    # cadastros = ler_csv()
-    # count = 0
-
-    # for cadastro in cadastros:
-    #     nome = cadastro["name"]
-    #     telefone = cadastro["phone"]
-    #     cpf = cadastro["cpf"]
-    #     sexo = cadastro["sexo"]
-    #     estado = cadastro["state"]
-    #     nomestado = cadastro["namestate"]
-    #     cidade = cadastro["city"]
+    query = "INSERT INTO dadosusuarios (name,phone,cpf,sexo,state,namestate,city) VALUES (?,?,?,?,?,?,?);"   
     cursor.execute(query,(name,phone,cpf,sexo,state,namestate,city))
-    conn.commit()
-    #     count += 1
-
-    #     if count == 100:
-    #         break
-
+    conn.commit() 
     conn.close() 
+
+
+
+
+def ler_ultimo_cadastro():
+    conn = sqlite3.connect("register.db")
+    cursor = conn.cursor()
+    query = "SELECT * FROM dadosusuarios ORDER BY ROWID DESC LIMIT 1;"
+    cursor.execute(query)
+    ultimo_cadastro = cursor.fetchone()
+    conn.close()
+        
+    if ultimo_cadastro:
+        return ultimo_cadastro  
+    else:
+        return {}
+       
+
     
+
+
 
 
 
