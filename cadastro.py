@@ -83,12 +83,25 @@ def ler_ultimo_cadastro():
     cursor.execute(query)
     ultimo_cadastro = cursor.fetchone()
     conn.close()
-        
+
     if ultimo_cadastro:
         return ultimo_cadastro  
     else:
-        return {}
-       
+        return []
+    
+
+
+def consultar_por_nome(name):
+    conn = sqlite3.connect("register.db")
+    cursor = conn.cursor()
+    query = "SELECT * FROM dadosusuarios WHERE name = ?;"
+    cursor.execute(query, (name,))
+    resultados = cursor.fetchall()
+    conn.close()  
+    return resultados
+
+
+   
 
     
 
