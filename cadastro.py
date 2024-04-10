@@ -101,10 +101,40 @@ def consultar_por_nome(name):
     return resultados
 
 
+def alterar_cadastro(id, new_name, new_phone, new_sexo, new_state, new_namestate, new_city):
+    conn = sqlite3.connect("register.db")
+    cursor = conn.cursor()
+    query = "UPDATE dadosusuarios SET name = ?, phone = ?, sexo = ?, state = ?, namestate = ?, city = ? WHERE id = ?;"
+    cursor.execute(query, (new_name, new_phone, new_sexo, new_state, new_namestate, new_city, id))
+    conn.commit()
+    conn.close()
+
+
+
+
+# def alterar_cadastro(id, name, phone, cpf, sexo, state, namestate, city):
+#     conn = sqlite3.connect("register.db")
+#     cursor = conn.cursor()
+#     query = "UPDATE dadosusuarios SET name = ?, phone = ?, cpf = ?, sexo = ?, state = ?, namestate = ?, city = ? WHERE id = ? AND name = ?"
+#     cursor.execute(query, (name, phone, cpf, sexo, state, namestate, city, id ,name))
+#     conn.commit()
+#     conn.close()
+
+# def alterar_cadastro(id, name, phone, cpf, sexo, state, namestate, city):
+#     conn = sqlite3.connect("register.db")
+#     cursor = conn.cursor()
+#     query = "UPDATE dadosusuarios SET name=?, phone=?, cpf=?, sexo=?, state=?, namestate=?, city=? WHERE id=? AND name=?;"
+#     cursor.execute(query, (name, phone, cpf, sexo, state, namestate, city, id, name))
+#     conn.commit()
+#     conn.close()
+
+# # Exemplo de uso:
+# alterar_cadastro(1, "Novo Nome", "Novo Telefone", "Novo CPF", "Novo Sexo", "Novo Estado", "Nova Cidade", "Novo Estado", "Nova Cidade")
+
+
    
 
     
-
 
 
 
