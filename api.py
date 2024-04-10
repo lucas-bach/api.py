@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 import uvicorn
 from typing import Union
-from cadastro import insert_users, ler_csv, ler_ultimo_cadastro
+from cadastro import insert_users, ler_csv, ler_ultimo_cadastro, consultar_por_nome
 from typing import List
 
 
@@ -22,9 +22,9 @@ def create(name: str,phone: str,cpf: str,sexo: str,state: str,namestate: str,cit
 
 
 @app.get("/consulte_by_name/{name}")
-def consulte(name):
-    dados_cvs = ler_csv()    
-    return  dados_cvs
+def consulte(name: str):
+    consult_name = consultar_por_nome(name)    
+    return  consult_name
 
 
 @app.get("/edit_name/{id}/{novo_nome}")
