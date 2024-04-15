@@ -1,14 +1,7 @@
 from pydantic import BaseModel
 import sqlite3
+from models import CreatePessoa
 
-class Cadastro(BaseModel):
-    name: str
-    phone: str
-    cpf: str
-    sexo: str
-    state: str
-    namestate: str
-    city: str
 
 # def pesquisar_por_estado(cadastros, estado, limite = 10):
 #     resultados = []
@@ -65,11 +58,11 @@ def ler_csv():
         cadastros.append(cadastro)
     return cadastros
 
-def insert_users(name,phone,cpf,sexo,state,namestate,city):
+def insert_users(pessoa : CreatePessoa):
     conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
     query = "INSERT INTO dadosusuarios (name,phone,cpf,sexo,state,namestate,city) VALUES (?,?,?,?,?,?,?);"   
-    cursor.execute(query,(name,phone,cpf,sexo,state,namestate,city))
+    cursor.execute(query,(pessoa.name,pessoa.phone,pessoa.cpf,pessoa.sexo,pessoa.state,pessoa.namestate,pessoa.city))
     conn.commit() 
     conn.close() 
 
@@ -91,21 +84,35 @@ def ler_ultimo_cadastro():
     
 
 
-def consultar_por_nome(name):
+def consultar_por_nome(name: str) -> CreatePessoa:
     conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
     query = "SELECT * FROM dadosusuarios WHERE name = ?;"
     cursor.execute(query, (name,))
     resultados = cursor.fetchall()
     conn.close()  
-    return resultados
+    return CreatePessoa(name=resultados[0],phone=resultados[1])
 
 
 def alterar_cadastro(id, new_name, new_phone, new_sexo, new_state, new_namestate, new_city):
     conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
-    query = "UPDATE dadosusuarios SET name = ?, phone = ?, sexo = ?, state = ?, namestate = ?, city = ? WHERE id = ?;"
-    cursor.execute(query, (new_name, new_phone, new_sexo, new_state, new_namestate, new_city, id))
+    if new_name != "":
+        query = "UPDATE dadosusuarios SET name = ? WHERE id = ?;"
+        cursor.execute(query, (new_name,id))
+    elif new_phone != "":
+        query = "UPDATE dadosusuarios SET phone = ? WHERE id = ?;"
+        cursor.execute(query, (new_phone,id))
+
+    conn.commit()
+    conn.close()
+
+
+def deletar_cadastro(id):
+    conn = sqlite3.connect("register.db")
+    cursor = conn.cursor()
+    query = "DELETE FROM dadosusuarios WHERE id = ?;"
+    cursor.execute(query, (id,))
     conn.commit()
     conn.close()
 
