@@ -1,10 +1,7 @@
 from fastapi import FastAPI, Query
 import uvicorn
-from typing import Union
-from cadastro import insert_users, ler_csv, ler_ultimo_cadastro, consultar_por_nome,alterar_cadastro,deletar_cadastro
-from typing import List
-from models import CreatePessoa
-
+from cadastro import insert_users, ler_csv, ler_ultimo_cadastro, consultar_por_nome,alterar_cadastro,deletar_cadastro,alterar_parcial_cadastro
+from models import CreatePessoa, UpdatePessoa
 
 
 app = FastAPI()                                                        
@@ -17,34 +14,26 @@ def home():
 
 
 @app.get("/query_by_name/{name}")
-def consulte(name: str) -> CreatePessoa:
-         
-    return consultar_por_nome(name)
-
-@app.get("/query_by_id/{id}")
-def consulte(name: str) -> CreatePessoa:
-         
-    return consultar_por_nome(name)
-
+def consultar_nome(name: str) -> CreatePessoa:         
+    return consultar_por_nome(name)     
+   
 
 @app.post("/create_cad")
 def create(pessoa : CreatePessoa):
-    insert_users(pessoa)
-      
-    return ler_ultimo_cadastro() 
+    insert_users(pessoa)      
+    return ler_ultimo_cadastro(pessoa) 
 
 
-@app.put("/create_cad")
-def create(pessoa : CreatePessoa):
-    insert_users(pessoa)
-      
-    return ler_ultimo_cadastro() 
+@app.put("/update/{id}")
+def to_update(id: int, pessoa : CreatePessoa):
+    alterar_cadastro(id,pessoa)      
+    return "Cadastro atualizado"
 
 
 
-@app.patch("/edit_name/{id}/{new_name}/{new_phone}/{new_sexo}/{new_state}/{new_namestate}/{new_city}")
-def edit_name(id: int, new_name: str, new_phone: str = "", new_sexo: str = "", new_state: str = "", new_namestate: str = "", new_city: str = ""):
-    alterar_cadastro(id, new_name, new_phone, new_sexo, new_state, new_namestate, new_city)
+@app.patch("/edit_name/{id}")
+def edit_name(id: int, pessoa : UpdatePessoa):
+    alterar_parcial_cadastro(id, pessoa)
     return {"message": "Nome alterado com sucesso"}
 
 
