@@ -1,36 +1,6 @@
 from pydantic import BaseModel
 import sqlite3
-from models import CreatePessoa
-
-
-# def pesquisar_por_estado(cadastros, estado, limite = 10):
-#     resultados = []
-#     encontrados = 0
-    
-#     for cadastro in cadastros:
-#         if cadastro["state"] == estado:
-#             resultados.append(cadastro)
-#             encontrados += 1
-            
-#             if encontrados == limite:
-#                 break
-    
-#     return resultados
-
-
-# def pesquisar_por_sexo(cadastros, sexo, limite = 10):
-#     resultados = []
-#     encontrados = 0
-    
-#     for cadastro in cadastros:
-#         if cadastro["sexo"] == sexo:
-#             resultados.append(cadastro)
-#             encontrados += 1
-            
-#             if encontrados == limite:
-#                 break
-    
-#     return resultados
+from models import CreatePessoa,UpdatePessoa
 
 
 def ler_csv():
@@ -58,6 +28,7 @@ def ler_csv():
         cadastros.append(cadastro)
     return cadastros
 
+
 def insert_users(pessoa : CreatePessoa):
     conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
@@ -65,8 +36,6 @@ def insert_users(pessoa : CreatePessoa):
     cursor.execute(query,(pessoa.name,pessoa.phone,pessoa.cpf,pessoa.sexo,pessoa.state,pessoa.namestate,pessoa.city))
     conn.commit() 
     conn.close() 
-
-
 
 
 def ler_ultimo_cadastro():
@@ -80,8 +49,7 @@ def ler_ultimo_cadastro():
     if ultimo_cadastro:
         return ultimo_cadastro  
     else:
-        return []
-    
+        return []    
 
 
 def consultar_por_nome(name: str) -> CreatePessoa:
@@ -89,24 +57,81 @@ def consultar_por_nome(name: str) -> CreatePessoa:
     cursor = conn.cursor()
     query = "SELECT * FROM dadosusuarios WHERE name = ?;"
     cursor.execute(query, (name,))
-    resultados = cursor.fetchall()
-    conn.close()  
-    return CreatePessoa(name=resultados[0],phone=resultados[1])
+    resultados = cursor.fetchone()
+    conn.close()
+
+    if resultados:        
+        return CreatePessoa(name=resultados[1], phone=resultados[2], sexo=resultados[3], state=resultados[4], namestate=resultados[5], city=resultados[6])
+    else:
+        return "Nenhum cadastro"  
 
 
-def alterar_cadastro(id, new_name, new_phone, new_sexo, new_state, new_namestate, new_city):
+def consultar_por_id(id: str ) -> CreatePessoa:
     conn = sqlite3.connect("register.db")
     cursor = conn.cursor()
-    if new_name != "":
-        query = "UPDATE dadosusuarios SET name = ? WHERE id = ?;"
-        cursor.execute(query, (new_name,id))
-    elif new_phone != "":
-        query = "UPDATE dadosusuarios SET phone = ? WHERE id = ?;"
-        cursor.execute(query, (new_phone,id))
+    query = "SELECT * FROM dadosusuarios WHERE id = ?;"
+    cursor.execute(query, (id,))
+    consulte = cursor.fetchone()
+    conn.close()
+
+    if consulte:
+        return CreatePessoa(id=[0])
+    else:
+        return "Esse id não existe!"
+    
+
+
+def alterar_cadastro(id: int, pessoa : CreatePessoa):
+    conn = sqlite3.connect("register.db")
+    cursor = conn.cursor()
+    query = "UPDATE dadosusuarios SET name = ?, phone = ?, sexo = ?, state = ?, namestate = ?, city = ? WHERE id = ?;"
+    cursor.execute(query, (pessoa.name,pessoa.phone,pessoa.sexo,pessoa.state,pessoa.namestate,pessoa.city, id))
 
     conn.commit()
     conn.close()
 
+
+def alterar_parcial_cadastro(id: int, pessoa : UpdatePessoa ):
+    conn = sqlite3.connect("register.db")
+    cursor = conn.cursor()
+    filters = []
+    variables = []
+
+    if pessoa.name is not None:
+       filters.append(f"name= ?")
+       variables.append(pessoa.name)
+
+    if pessoa.phone is not None:
+       filters.append("phone=?")
+       variables.append(pessoa.phone)
+
+    if pessoa.phone is not None:
+       filters.append("sexo=?")
+       variables.append(pessoa.sexo)
+
+    if pessoa.phone is not None:
+       filters.append("state=?")
+       variables.append(pessoa.state)
+
+    if pessoa.phone is not None:
+       filters.append("namestate=?")
+       variables.append(pessoa.namestate)
+
+    if pessoa.phone is not None:
+       filters.append("city=?")
+       variables.append(pessoa.city)      
+
+
+    variables.append(id) 
+      
+    filters_set = ",".join(filters)    
+
+    query = f"UPDATE dadosusuarios SET {filters_set}  WHERE id = ?;"
+    cursor.execute(query, variables)        
+
+    conn.commit()
+    conn.close()
+    
 
 def deletar_cadastro(id):
     conn = sqlite3.connect("register.db")
@@ -119,24 +144,6 @@ def deletar_cadastro(id):
 
 
 
-# def alterar_cadastro(id, name, phone, cpf, sexo, state, namestate, city):
-#     conn = sqlite3.connect("register.db")
-#     cursor = conn.cursor()
-#     query = "UPDATE dadosusuarios SET name = ?, phone = ?, cpf = ?, sexo = ?, state = ?, namestate = ?, city = ? WHERE id = ? AND name = ?"
-#     cursor.execute(query, (name, phone, cpf, sexo, state, namestate, city, id ,name))
-#     conn.commit()
-#     conn.close()
-
-# def alterar_cadastro(id, name, phone, cpf, sexo, state, namestate, city):
-#     conn = sqlite3.connect("register.db")
-#     cursor = conn.cursor()
-#     query = "UPDATE dadosusuarios SET name=?, phone=?, cpf=?, sexo=?, state=?, namestate=?, city=? WHERE id=? AND name=?;"
-#     cursor.execute(query, (name, phone, cpf, sexo, state, namestate, city, id, name))
-#     conn.commit()
-#     conn.close()
-
-# # Exemplo de uso:
-# alterar_cadastro(1, "Novo Nome", "Novo Telefone", "Novo CPF", "Novo Sexo", "Novo Estado", "Nova Cidade", "Novo Estado", "Nova Cidade")
 
 
    
@@ -163,7 +170,8 @@ def deletar_cadastro(id):
 #     conn.close()    
 
 # def atualizar_cadastro(nome_antigo, nome_novo):
-#     conn = sqlite3.connect("register.db")#     cursor = conn.cursor()
+#     conn = sqlite3.connect("register.db")    
+#     cursor = conn.cursor()
 #     query = "UPDATE pessoa SET nome = (?) WHERE nome = (?);"
 #     cursor.execute(query, ( nome_novo, nome_antigo))
 #     conn.commit()
